@@ -1,0 +1,29 @@
+[features]
+seeds = false
+skip-lint = false
+
+[programs.localnet]
+quantum_link = "CyJrx48JtLX9QdgmmMxARVpRuY4ixuML33SMzGHtV9Zu"
+validator = "2r4oKhRMhoZs3t9JvE9yrNsJxiinLarSTNGAR4KRkQDH"
+
+[programs.devnet]
+quantum_link = "CyJrx48JtLX9QdgmmMxARVpRuY4ixuML33SMzGHtV9Zu"
+validator = "2r4oKhRMhoZs3t9JvE9yrNsJxiinLarSTNGAR4KRkQDH"
+
+[programs.testnet]
+quantum_link = "CyJrx48JtLX9QdgmmMxARVpRuY4ixuML33SMzGHtV9Zu"
+validator = "2r4oKhRMhoZs3t9JvE9yrNsJxiinLarSTNGAR4KRkQDH"
+
+[programs.mainnet]
+quantum_link = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+validator = "HxNKfzJgCj3mQ9DRLr8KvXYiPx9VzRnPEDjuNE9rmC3d"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"

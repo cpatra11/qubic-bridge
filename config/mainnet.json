@@ -1,0 +1,39 @@
+{
+  "network": "mainnet",
+  "bridge": {
+    "solana": {
+      "programId": "YourSolanaProgramIdHere",
+      "rpcUrl": "https://api.mainnet-beta.solana.com",
+      "commitment": "confirmed"
+    },
+    "qubic": {
+      "contractAddress": "YourQubicContractAddressHere",
+      "rpcUrl": "https://rpc.qubic.network",
+      "apiKey": "YourQubicApiKeyHere"
+    }
+  },
+  "assets": {
+    "supportedAssets": [
+      {
+        "symbol": "SOL",
+        "decimals": 9
+      },
+      {
+        "symbol": "QBTC",
+        "decimals": 8
+      }
+    ]
+  },
+  "validators": {
+    "quorum": 3,
+    "validatorAddresses": [
+      "ValidatorAddress1",
+      "ValidatorAddress2",
+      "ValidatorAddress3"
+    ]
+  },
+  "settings": {
+    "transactionTimeout": 300,
+    "maxRetries": 5
+  }
+}

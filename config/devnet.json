@@ -1,0 +1,29 @@
+{
+  "network": "devnet",
+  "rpcUrl": "https://api.devnet.solana.com",
+  "qubicNetwork": {
+    "rpcUrl": "https://rpc.qubic.network",
+    "contractAddress": "0xYourQubicContractAddress"
+  },
+  "assets": {
+    "solana": {
+      "tokenMint": "YourSolanaTokenMintAddress",
+      "decimals": 9
+    },
+    "qubic": {
+      "tokenIdentifier": "YourQubicTokenIdentifier",
+      "decimals": 18
+    }
+  },
+  "bridge": {
+    "lockFee": 1000,
+    "unlockFee": 1000
+  },
+  "validator": {
+    "requiredConfirmations": 5,
+    "validatorSet": [
+      "ValidatorAddress1",
+      "ValidatorAddress2"
+    ]
+  }
+}

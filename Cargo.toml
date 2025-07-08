@@ -1,0 +1,33 @@
+[workspace]
+members = [
+    "src/shared",
+    "src/relayer",
+    "src/solana/client",
+    "programs/bridge",
+    "programs/validator",
+]
+
+resolver = "2"
+
+[workspace.dependencies]
+shared = { path = "src/shared" }
+anchor-lang = { version = "0.30.1", features = ["init-if-needed"] }
+anchor-spl = "0.30.1"
+solana-sdk = "1.18.0"
+solana-program = "1.18.0"
+solana-client = "1.18.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_bytes = "0.11"
+bincode = "1.3"
+tokio = { version = "1.0", features = ["full"] }
+sha2 = "0.10"
+reqwest = { version = "0.11", features = ["json"] }
+anyhow = "1.0"
+hex = "0.4"
+log = "0.4"
+env_logger = "0.10"
+chrono = { version = "0.4", features = ["serde"] }
+thiserror = "1.0"
+clap = { version = "4.0", features = ["derive"] }
+uuid = { version = "1.0", features = ["v4"] }

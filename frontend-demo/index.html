@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solana-Qubic Bridge - Cross-Chain Asset Transfer</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-bridge"></i>
+            <h1>Solana ⇄ Qubic Bridge</h1>
+          </div>
+          <div class="network-status">
+            <div class="status-item">
+              <span class="status-dot solana-status"></span>
+              <span>Solana: <span id="solana-status">Connected</span></span>
+            </div>
+            <div class="status-item">
+              <span class="status-dot qubic-status"></span>
+              <span>Qubic: <span id="qubic-status">Connected</span></span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Navigation -->
+      <nav class="nav-tabs">
+        <button class="tab-btn active" data-tab="bridge">
+          <i class="fas fa-exchange-alt"></i>
+          Bridge Assets
+        </button>
+        <button class="tab-btn" data-tab="portfolio">
+          <i class="fas fa-wallet"></i>
+          Portfolio
+        </button>
+        <button class="tab-btn" data-tab="transactions">
+          <i class="fas fa-history"></i>
+          Transactions
+        </button>
+        <button class="tab-btn" data-tab="use-cases">
+          <i class="fas fa-lightbulb"></i>
+          Use Cases
+        </button>
+      </nav>
+
+      <!-- Bridge Tab -->
+      <div class="tab-content active" id="bridge">
+        <div class="bridge-container">
+          <h2>Cross-Chain Asset Transfer</h2>
+
+          <!-- Bridge Direction Selector -->
+          <div class="bridge-direction">
+            <div class="chain-selector">
+              <button class="chain-btn active" data-direction="sol-to-qubic">
+                <div class="chain-info">
+                  <img
+                    src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png"
+                    alt="Solana"
+                    class="chain-logo"
+                  />
+                  <span>Solana</span>
+                </div>
+                <i class="fas fa-arrow-right"></i>
+                <div class="chain-info">
+                  <div class="qubic-logo">Q</div>
+                  <span>Qubic</span>
+                </div>
+              </button>
+            </div>
+
+            <button class="switch-direction" onclick="switchDirection()">
+              <i class="fas fa-exchange-alt"></i>
+            </button>
+
+            <div class="chain-selector">
+              <button class="chain-btn" data-direction="qubic-to-sol">
+                <div class="chain-info">
+                  <div class="qubic-logo">Q</div>
+                  <span>Qubic</span>
+                </div>
+                <i class="fas fa-arrow-right"></i>
+                <div class="chain-info">
+                  <img
+                    src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png"
+                    alt="Solana"
+                    class="chain-logo"
+                  />
+                  <span>Solana</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bridge Form -->
+          <div class="bridge-form">
+            <div class="form-group">
+              <label for="asset-select">Select Asset</label>
+              <select id="asset-select" class="form-control">
+                <option value="SOL">SOL - Solana</option>
+                <option value="QU">QU - Qubic</option>
+                <option value="USDC">USDC - USD Coin</option>
+                <option value="CUSTOM">Custom Token</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="amount-input">Amount</label>
+              <div class="amount-container">
+                <input
+                  type="number"
+                  id="amount-input"
+                  class="form-control"
+                  placeholder="0.00"
+                  step="0.000001"
+                />
+                <div class="balance-info">
+                  <span
+                    >Balance: <span id="wallet-balance">0.00</span>
+                    <span id="balance-token">SOL</span></span
+                  >
+                  <button class="max-btn" onclick="setMaxAmount()">MAX</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="destination-address">Destination Address</label>
+              <input
+                type="text"
+                id="destination-address"
+                class="form-control"
+                placeholder="Enter destination wallet address"
+              />
+              <div class="address-buttons">
+                <button class="btn-secondary" onclick="useConnectedWallet()">
+                  Use Connected Wallet
+                </button>
+                <button class="btn-secondary" onclick="generateAddress()">
+                  Generate New
+                </button>
+              </div>
+            </div>
+
+            <!-- Bridge Summary -->
+            <div class="bridge-summary">
+              <h3>Transfer Summary</h3>
+              <div class="summary-row">
+                <span>Amount:</span>
+                <span id="summary-amount">0.00 SOL</span>
+              </div>
+              <div class="summary-row">
+                <span>Bridge Fee:</span>
+                <span id="summary-fee">0.001 SOL</span>
+              </div>
+              <div class="summary-row">
+                <span>Network Fee:</span>
+                <span id="summary-network-fee">~0.0001 SOL</span>
+              </div>
+              <div class="summary-row total">
+                <span>Total Cost:</span>
+                <span id="summary-total">0.00 SOL</span>
+              </div>
+              <div class="summary-row">
+                <span>Estimated Time:</span>
+                <span id="summary-time">~2-5 minutes</span>
+              </div>
+            </div>
+
+            <!-- Bridge Button -->
+            <button class="btn-primary bridge-btn" onclick="initiateBridge()">
+              <i class="fas fa-rocket"></i>
+              Bridge Assets
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Portfolio Tab -->
+      <div class="tab-content" id="portfolio">
+        <div class="portfolio-container">
+          <h2>Your Cross-Chain Portfolio</h2>
+
+          <div class="wallet-section">
+            <h3>Connected Wallets</h3>
+            <div class="wallet-grid">
+              <div class="wallet-card">
+                <div class="wallet-header">
+                  <img
+                    src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png"
+                    alt="Solana"
+                    class="wallet-logo"
+                  />
+                  <div>
+                    <h4>Solana Wallet</h4>
+                    <p class="wallet-address">4xKrGH...Fn8w</p>
+                  </div>
+                  <button
+                    class="btn-secondary connect-btn"
+                    onclick="connectSolanaWallet()"
+                  >
+                    <i class="fas fa-plug"></i>
+                    Connect
+                  </button>
+                </div>
+                <div class="wallet-balance">
+                  <div class="balance-item">
+                    <span>SOL</span>
+                    <span>2.456 SOL</span>
+                  </div>
+                  <div class="balance-item">
+                    <span>USDC</span>
+                    <span>150.00 USDC</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="wallet-card">
+                <div class="wallet-header">
+                  <div class="qubic-logo">Q</div>
+                  <div>
+                    <h4>Qubic Wallet</h4>
+                    <p class="wallet-address">BZFPUA...LZBQ</p>
+                  </div>
+                  <button
+                    class="btn-secondary connect-btn"
+                    onclick="connectQubicWallet()"
+                  >
+                    <i class="fas fa-plug"></i>
+                    Connect
+                  </button>
+                </div>
+                <div class="wallet-balance">
+                  <div class="balance-item">
+                    <span>QU</span>
+                    <span>1,000.00 QU</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="assets-section">
+            <h3>Bridge Assets</h3>
+            <div class="assets-grid">
+              <div class="asset-card">
+                <div class="asset-info">
+                  <img
+                    src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png"
+                    alt="SOL"
+                    class="asset-logo"
+                  />
+                  <div>
+                    <h4>Solana (SOL)</h4>
+                    <p>Native Solana token</p>
+                  </div>
+                </div>
+                <div class="asset-balance">
+                  <div class="total-balance">2.456 SOL</div>
+                  <div class="chain-balances">
+                    <span>Solana: 2.456</span>
+                    <span>Qubic: 0.000</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="asset-card">
+                <div class="asset-info">
+                  <div class="qubic-logo">Q</div>
+                  <div>
+                    <h4>Qubic (QU)</h4>
+                    <p>Native Qubic token</p>
+                  </div>
+                </div>
+                <div class="asset-balance">
+                  <div class="total-balance">1,000.00 QU</div>
+                  <div class="chain-balances">
+                    <span>Qubic: 1,000.00</span>
+                    <span>Solana: 0.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transactions Tab -->
+      <div class="tab-content" id="transactions">
+        <div class="transactions-container">
+          <h2>Bridge Transaction History</h2>
+
+          <div class="transaction-filters">
+            <select class="form-control">
+              <option value="all">All Transactions</option>
+              <option value="pending">Pending</option>
+              <option value="completed">Completed</option>
+              <option value="failed">Failed</option>
+            </select>
+            <select class="form-control">
+              <option value="all">All Assets</option>
+              <option value="SOL">SOL</option>
+              <option value="QU">QU</option>
+              <option value="USDC">USDC</option>
+            </select>
+          </div>
+
+          <div class="transactions-list">
+            <div class="transaction-item pending">
+              <div class="transaction-status">
+                <i class="fas fa-clock"></i>
+                <span class="status-text">Pending</span>
+              </div>
+              <div class="transaction-details">
+                <div class="transaction-route">
+                  <img
+                    src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png"
+                    alt="Solana"
+                    class="chain-icon"
+                  />
+                  <i class="fas fa-arrow-right"></i>
+                  <div class="qubic-icon">Q</div>
+                </div>
+                <div class="transaction-info">
+                  <div class="amount">1.5 SOL</div>
+                  <div class="time">2 minutes ago</div>
+                </div>
+              </div>
+              <div class="transaction-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 60%"></div>
+                </div>
+                <span class="progress-text">Validator Confirmation (3/5)</span>
+              </div>
+            </div>
+
+            <div class="transaction-item completed">
+              <div class="transaction-status">
+                <i class="fas fa-check-circle"></i>
+                <span class="status-text">Completed</span>
+              </div>
+              <div class="transaction-details">
+                <div class="transaction-route">
+                  <div class="qubic-icon">Q</div>
+                  <i class="fas fa-arrow-right"></i>
+                  <img
+                    src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png"
+                    alt="Solana"
+                    class="chain-icon"
+                  />
+                </div>
+                <div class="transaction-info">
+                  <div class="amount">500 QU</div>
+                  <div class="time">1 hour ago</div>
+                </div>
+              </div>
+              <div class="transaction-hash">
+                <span>Tx: 2D4K...8B9f</span>
+                <button class="btn-link" onclick="viewTransaction('2D4K8B9f')">
+                  View
+                </button>
+              </div>
+            </div>
+
+            <div class="transaction-item completed">
+              <div class="transaction-status">
+                <i class="fas fa-check-circle"></i>
+                <span class="status-text">Completed</span>
+              </div>
+              <div class="transaction-details">
+                <div class="transaction-route">
+                  <img
+                    src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png"
+                    alt="Solana"
+                    class="chain-icon"
+                  />
+                  <i class="fas fa-arrow-right"></i>
+                  <div class="qubic-icon">Q</div>
+                </div>
+                <div class="transaction-info">
+                  <div class="amount">0.8 SOL</div>
+                  <div class="time">Yesterday</div>
+                </div>
+              </div>
+              <div class="transaction-hash">
+                <span>Tx: 9F2M...3K7p</span>
+                <button class="btn-link" onclick="viewTransaction('9F2M3K7p')">
+                  View
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Use Cases Tab -->
+      <div class="tab-content" id="use-cases">
+        <div class="use-cases-container">
+          <h2>Bridge Use Cases & Applications</h2>
+
+          <div class="use-case-grid">
+            <div class="use-case-card">
+              <div class="use-case-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <h3>DeFi Arbitrage</h3>
+              <p>
+                Take advantage of price differences between Solana and Qubic
+                ecosystems
+              </p>
+              <div class="use-case-example">
+                <strong>Example:</strong>
+                <ul>
+                  <li>QU trades at $0.95 on Solana DEX</li>
+                  <li>QU trades at $1.02 on Qubic DEX</li>
+                  <li>Bridge QU from Solana → Qubic for 7% profit</li>
+                </ul>
+              </div>
+              <button class="btn-primary" onclick="startArbitrageDemo()">
+                Try Demo
+              </button>
+            </div>
+
+            <div class="use-case-card">
+              <div class="use-case-icon">
+                <i class="fas fa-coins"></i>
+              </div>
+              <h3>Cross-Chain Yield Farming</h3>
+              <p>Access yield farming opportunities across both networks</p>
+              <div class="use-case-example">
+                <strong>Example:</strong>
+                <ul>
+                  <li>Farm QU-SOL LP on Solana (12% APY)</li>
+                  <li>Bridge rewards to Qubic for staking (18% APY)</li>
+                  <li>Compound earnings across chains</li>
+                </ul>
+              </div>
+              <button class="btn-primary" onclick="startYieldDemo()">
+                Explore Yields
+              </button>
+            </div>
+
+            <div class="use-case-card">
+              <div class="use-case-icon">
+                <i class="fas fa-gamepad"></i>
+              </div>
+              <h3>Gaming & NFTs</h3>
+              <p>Move gaming assets and NFTs between ecosystems</p>
+              <div class="use-case-example">
+                <strong>Example:</strong>
+                <ul>
+                  <li>Mint NFT on low-cost Qubic network</li>
+                  <li>Bridge to Solana for trading</li>
+                  <li>Access larger NFT marketplace</li>
+                </ul>
+              </div>
+              <button class="btn-primary" onclick="startGamingDemo()">
+                View NFTs
+              </button>
+            </div>
+
+            <div class="use-case-card">
+              <div class="use-case-icon">
+                <i class="fas fa-robot"></i>
+              </div>
+              <h3>AI & Compute Trading</h3>
+              <p>Trade Qubic's AI compute power using Solana tokens</p>
+              <div class="use-case-example">
+                <strong>Example:</strong>
+                <ul>
+                  <li>Hold USDC on Solana</li>
+                  <li>Bridge to Qubic when compute needed</li>
+                  <li>Purchase AI computation with QU</li>
+                </ul>
+              </div>
+              <button class="btn-primary" onclick="startComputeDemo()">
+                Buy Compute
+              </button>
+            </div>
+
+            <div class="use-case-card">
+              <div class="use-case-icon">
+                <i class="fas fa-building"></i>
+              </div>
+              <h3>Institutional Trading</h3>
+              <p>Large-scale asset movement for institutions</p>
+              <div class="use-case-example">
+                <strong>Example:</strong>
+                <ul>
+                  <li>Treasury management across chains</li>
+                  <li>Risk diversification</li>
+                  <li>Automated portfolio rebalancing</li>
+                </ul>
+              </div>
+              <button class="btn-primary" onclick="startInstitutionalDemo()">
+                Learn More
+              </button>
+            </div>
+
+            <div class="use-case-card">
+              <div class="use-case-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <h3>Community Projects</h3>
+              <p>Cross-chain DAOs and community initiatives</p>
+              <div class="use-case-example">
+                <strong>Example:</strong>
+                <ul>
+                  <li>DAO treasury on both chains</li>
+                  <li>Cross-chain governance voting</li>
+                  <li>Community-driven development</li>
+                </ul>
+              </div>
+              <button class="btn-primary" onclick="startCommunityDemo()">
+                Join DAO
+              </button>
+            </div>
+          </div>
+
+          <!-- Interactive Demo Section -->
+          <div class="demo-section">
+            <h3>Try Interactive Demo</h3>
+            <div class="demo-scenarios">
+              <div class="scenario-card active" data-scenario="arbitrage">
+                <h4>🚀 Arbitrage Opportunity</h4>
+                <p>Simulate a real arbitrage trade between Solana and Qubic</p>
+                <div class="scenario-stats">
+                  <div class="stat">
+                    <span class="label">Potential Profit:</span>
+                    <span class="value">+7.3%</span>
+                  </div>
+                  <div class="stat">
+                    <span class="label">Bridge Time:</span>
+                    <span class="value">~3 min</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="btn-primary demo-btn" onclick="startDemo()">
+              <i class="fas fa-play"></i>
+              Start Demo
+            </button>
+          </div>
+
+          <!-- Qubic Hackathon Integration Info -->
+          <div class="feature-card">
+            <h3>🏆 Official Qubic Hackathon</h3>
+            <p>Built using the official Qubic hackathon framework:</p>
+            <ul>
+              <li>
+                <strong>HM25 Template</strong>: Based on official Qubic smart
+                contract template
+              </li>
+              <li>
+                <strong>Madrid-2025 Branch</strong>: Uses the official
+                qubic/core repository
+              </li>
+              <li>
+                <strong>QPI Compliance</strong>: Implements Qubic Programming
+                Interface standards
+              </li>
+              <li>
+                <strong>Testnet Ready</strong>: Designed for hackathon testnet
+                deployment
+              </li>
+            </ul>
+            <div class="tech-stack">
+              <span class="tech-tag">QPI</span>
+              <span class="tech-tag">HM25</span>
+              <span class="tech-tag">C++</span>
+              <span class="tech-tag">Hackathon</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Bridge Progress -->
+    <div class="modal" id="bridge-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Bridge Transaction Progress</h3>
+          <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="progress-steps">
+            <div class="step completed">
+              <div class="step-icon"><i class="fas fa-check"></i></div>
+              <div class="step-content">
+                <h4>Transaction Submitted</h4>
+                <p>Your transaction has been submitted to the network</p>
+              </div>
+            </div>
+            <div class="step active">
+              <div class="step-icon"><i class="fas fa-clock"></i></div>
+              <div class="step-content">
+                <h4>Validator Confirmation</h4>
+                <p>Waiting for validator signatures (3/5 required)</p>
+                <div class="validator-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 60%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-icon"><i class="fas fa-exchange-alt"></i></div>
+              <div class="step-content">
+                <h4>Cross-Chain Transfer</h4>
+                <p>Assets will be transferred to destination chain</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-icon"><i class="fas fa-check-circle"></i></div>
+              <div class="step-content">
+                <h4>Complete</h4>
+                <p>Assets successfully bridged</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="transaction-details-modal">
+            <h4>Transaction Details</h4>
+            <div class="detail-row">
+              <span>Amount:</span>
+              <span>1.5 SOL</span>
+            </div>
+            <div class="detail-row">
+              <span>From:</span>
+              <span>Solana (4xKrGH...Fn8w)</span>
+            </div>
+            <div class="detail-row">
+              <span>To:</span>
+              <span>Qubic (BZFPUA...LZBQ)</span>
+            </div>
+            <div class="detail-row">
+              <span>Transaction Hash:</span>
+              <span>2D4K8B9f...3K7p</span>
+            </div>
+            <div class="detail-row">
+              <span>Estimated Time:</span>
+              <span>2-5 minutes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "network": "testnet",
+  "rpcUrl": "https://testnet.solana.com",
+  "qubicNetwork": {
+    "rpcUrl": "https://qubic.network/rpc",
+    "contractAddress": "0xYourQubicContractAddress"
+  },
+  "bridge": {
+    "lockContract": "0xYourLockContractAddress",
+    "unlockContract": "0xYourUnlockContractAddress",
+    "validatorContract": "0xYourValidatorContractAddress"
+  },
+  "assets": {
+    "supportedAssets": [
+      {
+        "symbol": "SOL",
+        "decimals": 9
+      },
+      {
+        "symbol": "QBTC",
+        "decimals": 8
+      }
+    ]
+  },
+  "relayer": {
+    "enabled": true,
+    "interval": 5000
+  }
+}

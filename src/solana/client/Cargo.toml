@@ -1,0 +1,15 @@
+[package]
+name = "solana-bridge-client"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+solana-sdk = { workspace = true }
+solana-client = { workspace = true }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+reqwest = { workspace = true }
+anyhow = { workspace = true }
+shared = { path = "../../shared" }
+
